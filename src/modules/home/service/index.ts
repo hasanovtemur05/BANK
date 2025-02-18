@@ -43,3 +43,9 @@ export const getChart = async (code:string, count:number) => {
   const response = await axiosInstance.get(`/api/chart?code=${code}&count=${count}`);
   return response?.data;
 };
+
+
+export const getFaqs = async ()=>{
+  const response = await axiosInstance.get("api/faqs?lang=uz")
+  return response?.data
+}

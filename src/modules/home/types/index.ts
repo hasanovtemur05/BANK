@@ -26,3 +26,10 @@ export interface ChartItemType {
     buying: number;
     selling: number;
   }
+
+  export interface FaqsType {
+    answer: string
+    id: number
+    question: string
+    slug: string
+  }

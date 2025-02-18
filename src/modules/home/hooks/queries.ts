@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useQuery } from "@tanstack/react-query";
-import { bestCourses, averageCourse, getCoursesOnBanks, getPredictions, getChart } from "../service";
+import { bestCourses, averageCourse, getCoursesOnBanks, getPredictions, getChart, getFaqs } from "../service";
 
 // ================================   GET BESTCOURSES  =========================================
 export function useBestCourses() {
@@ -61,5 +61,20 @@ export function usepredictions() {
       queryKey: ["chart", code, count],
       queryFn: () => getChart(code, count), 
     });
+  }
+
+
+
+  // ===================================  GET FAQS  ===============================
+
+  export function useGetFaqs() {
+    const { data } = useQuery({
+      queryFn: () => getFaqs(),
+      queryKey: ["faqs"],
+    });
+  
+    return {
+      data,
+    };
   }
   

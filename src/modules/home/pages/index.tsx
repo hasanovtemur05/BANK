@@ -1,12 +1,12 @@
 import { Button, Heading, Input, ListBox, ListBoxItem, TextField, } from "react-aria-components";
-import { useAverageCourse, useBestCourses, useCoursesOnBanks2, useGetChart, usepredictions } from "../hooks/queries";
+import { useAverageCourse, useBestCourses, useCoursesOnBanks2, useGetChart, useGetFaqs, usepredictions } from "../hooks/queries";
 import { useCreateConverter } from "../hooks/mutation";
 import { QueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { FcMoneyTransfer } from "react-icons/fc";
 import { PiMoneyBold } from "react-icons/pi";
 import { MdOutlineDateRange } from "react-icons/md";
-import { ChartItemType, PredictionType } from "../types";
+import { ChartItemType, FaqsType, PredictionType } from "../types";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { BiChart } from "react-icons/bi";
 import { AiOutlineLineChart } from "react-icons/ai";
@@ -23,9 +23,14 @@ const Index = () => {
   const { data: ortachaKursData } = useAverageCourse();
   const { data: banksData } = useCoursesOnBanks2(currency, sortBy, orderBy);
   const { data: prediction } = usepredictions();
+  const { data: faqss } = useGetFaqs()
   const { data: chart = [] } = useGetChart(count, code) as {
     data: ChartItemType[];
   };
+
+  const faqs = faqss?.data || []
+  console.log(faqs, "faqs");
+  
   const { mutate: createMutate } = useCreateConverter();
   const banks = banksData?.data || [];
   const predictionData = prediction?.data || [];
@@ -161,7 +166,6 @@ const Index = () => {
                     <strong>O‘zgarish foizi:</strong> {item.predicted_change}%
                   </p>
                   <p>
-                    {" "}
                     <strong>Status:</strong>
                     <span
                       className={`ml-1 ${
@@ -299,6 +303,30 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+
+      <div className="py-5">
+      <h1 className="text-2xl font-bold mb-4">Tez-tez so'raladigan savollar</h1>
+      {faqs.length > 0 ? (
+        <ul className="space-y-4">
+          {faqs.map((item:FaqsType) => (
+            <div key={item.id} className="border p-3 rounded-md shadow overflow-hidden">
+              <h2 className="text-lg font-bold text-blue-600">{item.question}</h2>
+              <p
+                className="text-gray-700"
+                
+              >{item.answer }</p>
+            </div>
+          ))}
+        </ul>
+      ) : (
+        <p>Yuklanmoqda...</p>
+      )}
+    </div>
+
+
+
+
     </div>
   );
 };
